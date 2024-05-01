@@ -1,0 +1,20 @@
+[credential]
+	helper = store
+[user]
+	email = christopher@ptak.io
+	name = Christopher Ptak
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[diff]
+	algorithm = minimal
+	colorMoved = default
+	colorMovedWS = no
+[push]
+	default = current
+	autoSetupRemote = true
+[init]
+	defaultBranch = main
+[core]
+	editor = vim

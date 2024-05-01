@@ -1,0 +1,116 @@
+#!/bin/sh
+
+ask ()
+{
+  while true
+  do
+    read -p "$1 [Y/n] " answer
+    case "$answer" in
+      y|Y) return 0 ;;
+      n|N) return 1 ;;
+      *)
+        echo 'Please enter Y or N.'
+      ;;
+    esac
+  done
+}
+
+command_exists ()
+{
+  if which "$1" 2>&1 >/dev/null
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+install_packages ()
+{
+  if command_exists 'dnf'
+  then
+    sudo dnf install -y $@
+  elif command_exists 'yum'
+  then
+    sudo yum install -y $@
+  elif command_exists 'apt'
+  then
+    sudo apt install -y $@
+  elif command_exists 'apt-get'
+  then
+    sudo apt-get install -y $@
+  else
+    echo 'Could not find a supported package manager, skipping install for now.'
+  fi
+}
+
+
+# Switch to the same directory as the script. This makes sure we do not
+# mistakenly copy a bunch of files from some other random directory.
+
+cd "$(dirname "$0")"
+echo "Executing from $PWD"
+
+
+# Create symlinks for all dotfiles. This way the files can be edited in-place
+# without having to copy them back into the git repository.
+
+for dotfile in .*
+do
+  case "$dotfile" in
+    .|..|.git)
+      continue
+    ;;
+  esac
+
+  if [ -L "$HOME/$dotfile" ]
+  then
+    if [ "$(readlink "$HOME/$dotfile")" != "$(pwd)/$dotfile" ]
+    then
+      echo "Replacing existing symlink $dotfile"
+      rm "$HOME/$dotfile" && ln -s "$(pwd)/$dotfile" "$HOME/$dotfile"
+    fi
+  elif [ -e "$HOME/$dotfile" ]
+  then
+    echo "$dotfile exists and is not a symlink, skipping"
+  else
+    echo "Creating a symlink for ~/$dotfile"
+    ln -s "$(pwd)/$dotfile" "$HOME/$dotfile"
+  fi
+done
+
+
+## Install additional tools and programs
+
+if ! command_exists 'zsh'
+then
+  if ask 'Would you like to install Zsh?'
+  then
+    install_packages zsh
+  fi
+fi
+
+if ! command_exists 'git'
+then
+  if ask 'Would you like to install Git?'
+  then
+    install_packages git
+  fi
+fi
+
+if ! [ -d "$HOME/.antidote" ]
+then
+  if ask 'Would you like to install Antidote (Zsh plugin manager)?'
+  then
+    git clone --depth=1 'https://github.com/mattmc3/antidote.git' "$HOME/.antidote"
+  fi
+fi
+
+if ! command_exists 'mise'
+then
+  if ask 'Would you like to install Mise (Dev tool manager)?'
+  then
+    curl -s 'https://mise.run' | sh
+  fi
+fi
+
