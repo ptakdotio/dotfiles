@@ -59,6 +59,11 @@ set nosmartindent
 set nowrap
 
 
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+
 ""
 "" Line numbering
 ""
