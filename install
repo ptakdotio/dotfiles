@@ -63,19 +63,21 @@ do
     ;;
   esac
 
+  destpath="$(realpath --relative-to="$HOME" "$dotfile")"
+
   if [ -L "$HOME/$dotfile" ]
   then
-    if [ "$(readlink "$HOME/$dotfile")" != "$(pwd)/$dotfile" ]
+    if [ "$(readlink "$HOME/$dotfile")" != "$destpath" ]
     then
       echo "Replacing existing symlink $dotfile"
-      rm "$HOME/$dotfile" && ln -s "$(pwd)/$dotfile" "$HOME/$dotfile"
+      rm "$HOME/$dotfile" && ln -s "$destpath" "$HOME/$dotfile"
     fi
   elif [ -e "$HOME/$dotfile" ]
   then
     echo "$dotfile exists and is not a symlink, skipping"
   else
     echo "Creating a symlink for ~/$dotfile"
-    ln -s "$(pwd)/$dotfile" "$HOME/$dotfile"
+    ln -s "$destpath" "$HOME/$dotfile"
   fi
 done
 
