@@ -11,6 +11,7 @@ SAVEHIST=10000
 
 # Aliases
 alias ls='ls --color=auto'
+alias open='xdg-open'
 
 # Source Antidote
 if [ -d ~/.antidote ]
