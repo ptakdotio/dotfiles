@@ -63,6 +63,30 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 
+let s:depth = 0
+
+if &ft == 'c' || &ft == 'cpp'
+  let s:depth = 4
+elseif &ft == 'html'
+  let s:depth = 2
+elseif &ft == 'haskell'
+  let s:depth = 2
+elseif &ft == 'javascript'
+  let s:depth = 2
+elseif &ft == 'json'
+  let s:depth = 2
+elseif &ft == 'elm'
+  let s:depth = 2
+endif
+
+if s:depth == 0
+  let s:depth = 4
+endif
+
+setlocal expandtab
+let &tabstop = s:depth
+let &shiftwidth = s:depth
+
 
 ""
 "" Line numbering
