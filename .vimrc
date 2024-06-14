@@ -14,8 +14,7 @@ call plug#begin()
 Plug 'catppuccin/vim',                     { 'as': 'catppuccin' }
 Plug 'itchyny/lightline.vim',              { 'as': 'lightline'  }
 
-Plug 'purescript-contrib/purescript-vim',  { 'as': 'purescript' }
-Plug 'wuelnerdotexe/vim-astro',            { 'as': 'astro'      }
+Plug 'sheerun/vim-polyglot',               { 'as': 'polyglot'   }
 
 Plug 'tpope/vim-commentary',               { 'as': 'commentary' }
 Plug 'farmergreg/vim-lastplace',           { 'as': 'lastplace'  }
@@ -28,17 +27,17 @@ function! IsPluginInstalled(name)
 endfunction
 
 " Detect whether any plugins are installed
-function! IsAnyPluginInstalled()
+function! AreAllPluginsInstalled()
   for key in keys(g:plugs)
-    if IsPluginInstalled(key)
-      return 1
+    if !IsPluginInstalled(key)
+      return 0
     endif
   endfor
-  return 0
+  return 1
 endfunction
 
 " Install all plugins if none are present
-if !IsAnyPluginInstalled()
+if !AreAllPluginsInstalled()
   PlugInstall
   quit
 endif
@@ -66,7 +65,7 @@ set shiftwidth=4
 let s:depth = 0
 
 if &ft == 'c' || &ft == 'cpp'
-  let s:depth = 4
+  let s:depth = 2
 elseif &ft == 'html'
   let s:depth = 2
 elseif &ft == 'haskell'
@@ -80,7 +79,7 @@ elseif &ft == 'elm'
 endif
 
 if s:depth == 0
-  let s:depth = 4
+  let s:depth = 2
 endif
 
 setlocal expandtab

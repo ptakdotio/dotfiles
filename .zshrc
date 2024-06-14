@@ -11,6 +11,7 @@ SAVEHIST=10000
 
 # Aliases
 alias ls='ls --color=auto'
+alias tree='tree --gitignore'
 alias open='xdg-open'
 
 # Source Antidote
