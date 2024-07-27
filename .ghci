@@ -1,3 +1,2 @@
-:set prompt "\x03BB\x203A "
-:set prompt-cont " \x203A "
-
+:set prompt      "ghci> "
+:set prompt-cont "    > "
