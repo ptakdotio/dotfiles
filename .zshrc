@@ -2,6 +2,7 @@
 
 # Custom path directories
 PATH+=":$HOME/.local/bin"
+PATH+=":$HOME/.cabal/bin"
 
 # Keep history
 setopt appendhistory
