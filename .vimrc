@@ -55,8 +55,9 @@ set nocindent
 set noautoindent
 set nosmartindent
 
-set nowrap
-
+set wrap
+set linebreak
+set nolist
 
 set expandtab
 set tabstop=8
